@@ -1,22 +1,23 @@
 # !/bin/python
-# ##########################################################
-# First implementation of the RIP algorithm to get familiar.
-# ##########################################################
+# ##########################################
+# First implementation of the RIP algorithm.
+# ##########################################
 
 
 import networkx as nx
-import network_graph as nwrk
+import network_graph as graph_gen
 import numpy as np
 import Queue
 import sys
 
+convergence = False
 
-def generate_rip_graph(draw_flag):
+def generate_rip_graph(draw_flag, size):
     """
     :param draw_flag:
     :return n_graph: the generated graph
     """
-    n_graph = nwrk.generate_graph()
+    n_graph = graph_gen.generate_graph(size)
 
     # Add a distance matrix, a best weights vector and a queue to all the nodes
     n = n_graph.number_of_nodes()
@@ -34,7 +35,7 @@ def generate_rip_graph(draw_flag):
     n_graph.nodes(data=True)
 
     if draw_flag:
-        nwrk.draw_graph(n_graph)
+        graph_gen.draw_graph(n_graph)
 
     return n_graph
 
@@ -61,6 +62,8 @@ def rip_first_iteration(G):
 
 # Pass the best distances vectors (or best weights vectors to all the neighbors)
 def rip_broadcast(G):
+    global convergence
+    convergence = True
     for n, nattr in G.nodes(data=True):
         bwv = nattr['best_weights_vector']
         edges_from_n = G[n].items()
@@ -91,12 +94,18 @@ def rip_update_distance_matrix(G):
             for i in range(0, len(bwv)):
                 # Update the distance to the node via the neighbor
                 if i != n:  # If it's not myself
+                    old_distance = dm[i, origin_node]
                     new_distance = vector[i] + distance_to_neighbor
                     # print "i: %d, n: %d, distance: %d" % (i, n, vector[i])
-                    dm[i, origin_node] = new_distance
+                    if new_distance < old_distance:
+                        dm[i, origin_node] = new_distance
+                        global convergence
+                        convergence = False
                     # Compute if it is the best distance
                     if new_distance < bwv[i]:
                         bwv[i] = new_distance
+                        global convergence
+                        convergence = False
 
         # print "I am in node %d" % n
         # print "My matrix"
@@ -106,29 +115,25 @@ def rip_update_distance_matrix(G):
         # print "\n"
 
 
-if __name__ == '__main__':
-    network_graph = generate_rip_graph(True)
+if __name__ == '__main__':    
+    
+    network_graph = generate_rip_graph(True, 100)
 
     rip_first_iteration(network_graph)
 
-    # TODO: Think about a stop condition!!!! - repeat every 30 seconds
-    rip_broadcast(network_graph)
-    rip_update_distance_matrix(network_graph)
-    rip_broadcast(network_graph)
-    rip_update_distance_matrix(network_graph)
-    rip_broadcast(network_graph)
-    rip_update_distance_matrix(network_graph)
-    rip_broadcast(network_graph)
-    rip_update_distance_matrix(network_graph)
+    while not convergence:
+        rip_broadcast(network_graph)
+        rip_update_distance_matrix(network_graph)
 
     # Comparing with bellman-ford for testing
-    for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
-        print "Our RIP:"
-        print "(%d,%s)" % (n, nattr['best_weights_vector'])
+    #for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
+        #print "Our RIP:"
+        #print "(%d,%s)" % (n, nattr['best_weights_vector'])
 
-        pred, dist = nx.bellman_ford(network_graph, n)
-        # print sorted(pred.items())
-        print "Bellman_ford:"
-        print sorted(dist.items())
+        #pred, dist = nx.bellman_ford(network_graph, n)
+        ## print sorted(pred.items())
+        #print "Bellman_ford:"
+        #print sorted(dist.items())
+        #break
 
 

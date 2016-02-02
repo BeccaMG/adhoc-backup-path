@@ -3,27 +3,28 @@ import networkx as nx
 import numpy as np
 
 
-def generate_graph():
+def generate_graph(size):
     """
-    Creates a weighted graph with a random number of nodes and weights. The graph is constructed using
-    Barabasi-Albert algorithm.
+    Creates a weighted graph with size number of nodes and random weights. 
+    The graph is constructed using Barabasi-Albert algorithm.
 
-    :return n_graph: the generated graph
+    :returns n_graph: the generated graph
     """
 
-    # Minimum and Maximum number of nodes in the generated graph
-    min_nodes = 3
-    max_nodes = 5
+    ## Minimum and Maximum number of nodes in the generated graph
+    #min_nodes = 3
+    #max_nodes = 5
 
     # Lowest and highest possible values for the edges' weights
     low_edge = 1
     high_edge = 10
 
-    # Create the graph with 2 edges added to any new node and random number of
-    # nodes in [min, max] using Barabasi-Albert
-    number_nodes = np.random.randint(min_nodes, max_nodes)
-    # number_nodes = 3
-    n_graph = nx.barabasi_albert_graph(number_nodes, 2, seed=None)
+    ## Create the graph with 2 edges added to any new node and random number of
+    ## nodes in [min, max] using Barabasi-Albert
+    #number_nodes = np.random.randint(min_nodes, max_nodes)
+    ## number_nodes = 3
+    #n_graph = nx.barabasi_albert_graph(number_nodes, 2, seed=None)
+    n_graph = nx.barabasi_albert_graph(size, 2, seed=None)
 
     # Random weights
     weights = np.random.random_integers(low=low_edge, high=high_edge, size=n_graph.number_of_edges())
