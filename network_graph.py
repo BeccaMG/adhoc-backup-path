@@ -7,26 +7,19 @@ def generate_graph(size):
     """
     Creates a weighted graph with size number of nodes and random weights. 
     The graph is constructed using Barabasi-Albert algorithm.
-
+    :param size:
     :returns n_graph: the generated graph
     """
-
-    ## Minimum and Maximum number of nodes in the generated graph
-    #min_nodes = 3
-    #max_nodes = 5
 
     # Lowest and highest possible values for the edges' weights
     low_edge = 1
     high_edge = 10
 
-    ## Create the graph with 2 edges added to any new node and random number of
-    ## nodes in [min, max] using Barabasi-Albert
-    #number_nodes = np.random.randint(min_nodes, max_nodes)
-    ## number_nodes = 3
-    #n_graph = nx.barabasi_albert_graph(number_nodes, 2, seed=None)
+    # Create a Barabasi-Albert graph with the passed size and
+    # 2 edges added to any new node
     n_graph = nx.barabasi_albert_graph(size, 2, seed=None)
 
-    # Random weights
+    # Random weights with values between low_edge and high_edge
     weights = np.random.random_integers(low=low_edge, high=high_edge, size=n_graph.number_of_edges())
     for i, (n1, n2) in enumerate(n_graph.edges()):
         n_graph[n1][n2]['weight'] = weights[i]
@@ -35,6 +28,10 @@ def generate_graph(size):
 
 
 def draw_graph(n_graph):
+    """
+    Prints the graph to the terminal with the edges labelled by their weights
+    :param n_graph:
+    """
     pos = nx.spring_layout(n_graph)
     # Labeling the edges with their weights
     edge_labels = {(n1, n2): n_graph[n1][n2]['weight'] for (n1, n2) in n_graph.edges()}

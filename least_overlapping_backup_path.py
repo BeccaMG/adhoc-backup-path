@@ -234,23 +234,41 @@ def calculate_backup(G):
         nattr['path_matrix'] = pm
 
 
-if __name__ == '__main__':
+def least_overlapping_backup_path(size):
+    net_graph = generate_rip_graph(False, size)
 
-    network_graph = generate_rip_graph(False, 4)
-
-    rip_first_iteration(network_graph)
+    rip_first_iteration(net_graph)
 
     while not convergence:
-        rip_broadcast(network_graph)
-        rip_update_distance_matrix(network_graph)
+        rip_broadcast(net_graph)
+        rip_update_distance_matrix(net_graph)
 
-    # calculate_backup(network_graph)
+    for _ in range(size):  # For each node n and attribute nattr
+        calculate_backup(net_graph)
 
-    # Comparing with bellman-ford for testing
+    return net_graph
+
+
+if __name__ == '__main__':
+
+    # network_graph = generate_rip_graph(False, 4)
+    #
+    # rip_first_iteration(network_graph)
+    #
+    # while not convergence:
+    #     rip_broadcast(network_graph)
+    #     rip_update_distance_matrix(network_graph)
+    #
+    # # calculate_backup(network_graph)
+    #
+    # # Comparing with bellman-ford for testing
+    # for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
+    #
+    #     calculate_backup(network_graph)
+
+    network_graph = least_overlapping_backup_path(100)
+
     for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
-
-        calculate_backup(network_graph)
-
         print "Node %d\n==============" % n
         for m in nattr['primary_path']:
             print "path = %s" % m

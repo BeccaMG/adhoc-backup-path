@@ -143,20 +143,33 @@ def set_backup_next_hop(G):
                     bnhv[i] = result[1]                 
         
 
+def worst_cost_backup_path(size):
+    net_graph = generate_rip_graph(False, size)
+    np.set_printoptions(precision=1)
 
+    rip_first_iteration(net_graph)
+
+    while not convergence:
+        rip_broadcast(net_graph)
+        rip_update_distance_matrix(net_graph)
+
+    set_backup_next_hop(net_graph)
+    return net_graph
 
 if __name__ == '__main__':    
     
-    network_graph = generate_rip_graph(False, 6)
-    np.set_printoptions(precision=1)
+    # network_graph = generate_rip_graph(False, 6)
+    # np.set_printoptions(precision=1)
+    #
+    # rip_first_iteration(network_graph)
+    #
+    # while not convergence:
+    #     rip_broadcast(network_graph)
+    #     rip_update_distance_matrix(network_graph)
+    #
+    # set_backup_next_hop(network_graph)
 
-    rip_first_iteration(network_graph)
-
-    while not convergence:
-        rip_broadcast(network_graph)
-        rip_update_distance_matrix(network_graph)
-        
-    set_backup_next_hop(network_graph)
+    network_graph = worst_cost_backup_path(6)
 
     #Comparing with bellman-ford for testing
     for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
