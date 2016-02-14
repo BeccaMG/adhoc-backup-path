@@ -82,8 +82,8 @@ def single_experiment(size):
     #rip_gen.draw_graph(network_graph)
     
     for tp in [10, 30, 50, 70]:
-        print "\n%d of topology change" % tp
-        print "====================="
+        print "\n%d%% of topology change" % tp
+        print "======================"
         reduced_graph = network_graph.subgraph(network_graph.nodes())
         deleted_edges = reduce_edges(reduced_graph, tp)
         print "%d edges deleted" % len(deleted_edges)
@@ -119,14 +119,15 @@ def single_experiment(size):
 
 if __name__ == '__main__':
 
-    print "\n******** STARTING SMALL EXPERIMENT ********"
-    single_experiment(10)        
-    
-    print "\n\n******** STARTING MEDIUM EXPERIMENT ********"
-    single_experiment(50)
-    
-    print "\n\n******** STARTING BIG EXPERIMENT ********"
-    single_experiment(100)
+    for i in range(1):
+        print "\n******** STARTING SMALL EXPERIMENT ********"
+        single_experiment(10)  
+        
+        print "\n\n******** STARTING MEDIUM EXPERIMENT ********"
+        single_experiment(50)
+        
+        print "\n\n******** STARTING BIG EXPERIMENT ********"
+        single_experiment(100)
     
     #for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
         #print n
