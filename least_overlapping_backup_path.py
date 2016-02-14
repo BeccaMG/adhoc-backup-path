@@ -152,20 +152,28 @@ def calculate_backup(G):
     for n, nattr in G.nodes(data=True):
         pp = nattr['primary_paths']
         bp = nattr['backup_paths']
+        bnh = nattr['backup_next_hop']
 
         for m, mattr in G.nodes(data=True):
             if m == n:
                 pp.append([])
                 bp.append([])
+                bnh[m] = None
             else:
                 ppx = nx.shortest_path(G, source=n, target=m)
                 pp.append(ppx)
                 pm = nx.all_simple_paths(G, source=n, target=m)
                 # random.shuffle(pm)
                 bp.append(get_single_backup(ppx, pm))
-                print "Path Matrix of %d to %d = %s" % (n, m, pm)
+                bnh[m] = (bp[m][1])
+                # print "Path Matrix of %d to %d = %s" % (n, m, pm)
             print "Primary_path of %d to %d = %s" % (n, m, pp[m])
             print "Backup_path of %d to %d = %s" % (n, m, bp[m])
+            print "Backup_next_hop of %d to %d = %.0f" % (n, m, bnh[m])
+        nattr['primary_paths'] = pp
+        nattr['backup_paths'] = bp
+        nattr['backup_next_hop'] = bnh
+
 
 
 def get_single_backup(primary_path, path_matrix):
@@ -212,7 +220,7 @@ if __name__ == '__main__':
     #     rip_broadcast(network_graph)
     #     rip_update_distance_matrix(network_graph)
 
-    network_graph = rip_simple(50)
+    network_graph = rip_simple(10)
 
     # Comparing with bellman-ford for testing
     for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr
