@@ -70,7 +70,16 @@ def check_backup_strategy(original_graph, reduced_graph, source, destination):
         
         
 def single_experiment(size):
+    # Original graph to clone several times, with the second best path strategy applied
     network_graph = rip_gen.generate_rip_graph(size)
+    sbp.second_best_cost_backup_path(network_graph)
+    
+    # This creates two more copies of the graph so I can apply each backup strategy on them
+    network_graph_wbp = network_graph.subgraph(network_graph.nodes())
+    wbp.worst_cost_backup_path(network_graph_wbp)
+    network_graph_lbp = network_graph.subgraph(network_graph.nodes())
+    
+    # Compute all the shortest paths in the graph as primary paths
     print "A graph with %d nodes and %d edges was generated." % (network_graph.number_of_nodes(), network_graph.number_of_edges())
     primary_paths = []
     for k,v in nx.shortest_path(network_graph).iteritems():
@@ -81,19 +90,18 @@ def single_experiment(size):
 
     #rip_gen.draw_graph(network_graph)
     
+    # Changing the topology by deleting 10%, 30%, 50% and 70% of the edges
     for tp in [10, 30, 50, 70]:
         print "\n%d%% of topology change" % tp
         print "======================"
         reduced_graph = network_graph.subgraph(network_graph.nodes())
         deleted_edges = reduce_edges(reduced_graph, tp)
         print "%d edges deleted" % len(deleted_edges)
-        #print deleted_edges
+        print deleted_edges
         ap = detect_affected_paths(primary_paths, deleted_edges)
         #print ap
         print "Affection rate: %d/%d = %.2f%%" % (len(ap), len(primary_paths), len(ap)*100.0/len(primary_paths))
         string = "Fail rate: %d/%d = %.2f%%\" % (fail_count, len(ap), fail_count*100.0/len(ap))"
-        
-        sbp.second_best_cost_backup_path(network_graph) 
         
         global fail_count    
         fail_count = 0
@@ -102,12 +110,10 @@ def single_experiment(size):
         
         print "\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))                
         
-        wbp.worst_cost_backup_path(network_graph)
-        
         global fail_count    
         fail_count = 0
         for (s,d) in ap:
-            check_backup_strategy(network_graph, reduced_graph, s, d)
+            check_backup_strategy(network_graph_wbp, reduced_graph, s, d)
 
         print "Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
     
