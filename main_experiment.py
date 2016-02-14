@@ -100,8 +100,7 @@ def single_experiment(size):
         print deleted_edges
         ap = detect_affected_paths(primary_paths, deleted_edges)
         #print ap
-        print "Affection rate: %d/%d = %.2f%%" % (len(ap), len(primary_paths), len(ap)*100.0/len(primary_paths))
-        string = "Fail rate: %d/%d = %.2f%%\" % (fail_count, len(ap), fail_count*100.0/len(ap))"
+        print "Affection rate (paths affected after deletion): %d/%d = %.2f%%" % (len(ap), len(primary_paths), len(ap)*100.0/len(primary_paths))
         
         global fail_count    
         fail_count = 0
