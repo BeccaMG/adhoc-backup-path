@@ -10,7 +10,6 @@ import networkx as nx
 import numpy as np
 import Queue
 import sys
-import heapq
 
 
 def generate_graph(size):
@@ -79,8 +78,7 @@ def rip_graph(size):
 
         n_graph.node[i]['distance_matrix'] = new_distance_matrix
         n_graph.node[i]['default_next_hop'] = new_default_next_hop_vector
-        
-        
+
         # #################################################################
         # ###################       The backup path     ###################
         # #################################################################
@@ -88,14 +86,10 @@ def rip_graph(size):
         new_backup_next_hop_vector.fill(None)
         new_default_path = []
         new_backup_path = []
-        
-        for k in range(0, n):
-            new_default_path.append('N/A')
-            new_backup_path.append('N/A')
 
         n_graph.node[i]['backup_next_hop'] = new_backup_next_hop_vector
-        n_graph.node[i]['primary_path'] = new_default_path
-        n_graph.node[i]['backup_path'] = new_backup_path
+        n_graph.node[i]['primary_paths'] = new_default_path
+        n_graph.node[i]['backup_paths'] = new_backup_path
         
         
         # Control messages content
@@ -117,9 +111,8 @@ def rip_first_iteration(G):
         dm = nattr['distance_matrix']
         nhv = nattr['default_next_hop']
         bwv = nattr['best_weights_vector']
-        pp = nattr['primary_path']
         bwv[n] = 0
-        pp[n] = []
+
         
         edges_from_n = G[n].items()  # Obtain all edges from node n
         
@@ -128,7 +121,6 @@ def rip_first_iteration(G):
             dm[e, e] = w
             bwv[e] = w
             nhv[e] = e
-            pp[e] = [e]
 
 
 # Pass the best distances vectors (or best weights vectors to all the neighbors)
@@ -137,23 +129,15 @@ def rip_broadcast(G):
     convergence = True
     for n, nattr in G.nodes(data=True):
         bwv = nattr['best_weights_vector']
-        pp = nattr['primary_path']
         edges_from_n = G[n].items()
         for e, eattr in edges_from_n:
-            node_enqueue(G, e, n, bwv, pp)  # Pass the info to all its neighbors
+            node_enqueue(G, e, n, bwv)  # Pass the info to all its neighbors
 
 
 # Enqueue on node to receive updates with redundancy
-def node_enqueue(G, n1, n0, vector, path):
+def node_enqueue(G, n1, n0, vector):
     bq = G.node[n1]['buffer_queue']
-    path_to_enq = []
-    for (i, p) in enumerate(path):
-        if p != 'N/A':
-            path_to_enq.append([n0])
-            path_to_enq[i].extend(p)
-        else:
-            path_to_enq.append(p)
-    to_enqueue = n0, vector, path_to_enq
+    to_enqueue = n0, vector
     bq.put(to_enqueue)
 
 
@@ -164,13 +148,11 @@ def rip_update_distance_matrix(G):
         nhv = nattr['default_next_hop']
         bwv = nattr['best_weights_vector']
         bq = nattr['buffer_queue']
-        pp = nattr['primary_path']
 
         while not bq.empty():
             element = bq.get()
             origin_node = element[0]
             received_vector = element[1]  # Received best distance vector from my neighbor
-            received_path = element[2]
             distance_to_neighbor = dm[origin_node, origin_node]
             
             for i in range(0, len(bwv)):
@@ -178,7 +160,6 @@ def rip_update_distance_matrix(G):
                 if i != n:  # If it's not myself
                     old_distance = dm[i, origin_node]
                     new_distance = received_vector[i] + distance_to_neighbor
-                    new_path = received_path[i]
                     
                     if new_distance < old_distance:
                         dm[i, origin_node] = new_distance
@@ -188,7 +169,6 @@ def rip_update_distance_matrix(G):
                     # Compute if it is the best distance
                     if new_distance < bwv[i]:
                         bwv[i] = new_distance
-                        pp[i] = new_path
                         nhv[i] = origin_node
                         global convergence
                         convergence = False
