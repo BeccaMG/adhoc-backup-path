@@ -1,0 +1,29 @@
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 24/26 = 92.31%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 22/22 = 100.00%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 18/21 = 85.71%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 25/25 = 100.00%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 14/25 = 56.00%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 14/20 = 70.00%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 16/22 = 72.73%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 20/28 = 71.43%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 27/28 = 96.43%
+--
+30% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 18/22 = 81.82%

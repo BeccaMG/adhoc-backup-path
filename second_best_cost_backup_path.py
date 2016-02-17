@@ -6,7 +6,6 @@
 # IMPORTANT, DOES NOT DETECT LOOPS
 
 import rip_graph_generator as rip_gen
-import network_graph as graph_gen
 
 import numpy as np
 import Queue
@@ -57,4 +56,4 @@ if __name__ == '__main__':
         # print "All shortest (%d,%d)" % (n, i)
         # print ([p for p in nx.all_shortest_paths(network_graph,source=n,weight='weight')])
 
-    graph_gen.draw_graph(network_graph)
+    rip_gen.draw_graph(network_graph)

@@ -1,0 +1,29 @@
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1705/1721 = 99.07%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1810/1817 = 99.61%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1785/1791 = 99.66%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1836/1845 = 99.51%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1848/1859 = 99.41%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1700/1733 = 98.10%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1729/1746 = 99.03%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1677/1685 = 99.53%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1664/1683 = 98.87%
+--
+70% of topology change
+Using SECOND BEST COST backup strategy...   Fail rate: 1703/1716 = 99.24%

@@ -1,0 +1,29 @@
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 1093/1579 = 69.22%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 1581/2147 = 73.64%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 1068/1784 = 59.87%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 649/1256 = 51.67%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 1219/1709 = 71.33%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 907/1370 = 66.20%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 719/1450 = 49.59%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 1220/1989 = 61.34%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 536/1451 = 36.94%
+--
+10% of topology change
+Using WORST BEST COST backup strategy...   Fail rate: 766/1551 = 49.39%

@@ -37,7 +37,7 @@ def worst_cost_backup_path(G):
 
 if __name__ == '__main__':    
     
-    network_graph = rip_gen.generate_rip_graph(False, 6)
+    network_graph = rip_gen.generate_rip_graph(50)
     
     np.set_printoptions(precision=1)
     

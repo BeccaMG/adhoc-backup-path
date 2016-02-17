@@ -4,7 +4,6 @@
 # #######################################################################
 
 import rip_graph_generator as rip_gen
-import network_graph as graph_gen
 import networkx as nx
 import numpy as np
 import sys
@@ -59,7 +58,7 @@ def get_single_backup(primary_path, path_matrix):
 
 
 if __name__ == '__main__':
-    network_graph = rip_gen.generate_rip_graph(6)
+    network_graph = rip_gen.generate_rip_graph(50)
 
     np.set_printoptions(precision=1)
 
@@ -67,4 +66,4 @@ if __name__ == '__main__':
 
     # Comparing with bellman-ford for testing
 
-    graph_gen.draw_graph(network_graph)
+    rip_gen.draw_graph(network_graph)

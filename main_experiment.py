@@ -92,8 +92,8 @@ def single_experiment(size):
     network_graph_wbp = network_graph.subgraph(network_graph.nodes())
     wbp.worst_cost_backup_path(network_graph_wbp)
 
-    network_graph_lbp = network_graph.subgraph(network_graph.nodes())
-    lbp.least_overlapping_backup_path(network_graph_lbp)
+    #network_graph_lbp = network_graph.subgraph(network_graph.nodes())
+    #lbp.least_overlapping_backup_path(network_graph_lbp)
 
     # Compute all the shortest paths in the graph as primary paths
     print "A graph with %d nodes and %d edges was generated." % (network_graph.number_of_nodes(), network_graph.number_of_edges())
@@ -125,7 +125,7 @@ def single_experiment(size):
             check_backup_strategy(network_graph, reduced_graph, s, d)
 
         print "\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
-        outfile.write("\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
+        #outfile.write("\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
         global fail_count
         fail_count = 0
@@ -133,15 +133,15 @@ def single_experiment(size):
             check_backup_strategy(network_graph_wbp, reduced_graph, s, d)
 
         print "Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
-        outfile.write("Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
+        #outfile.write("Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
         # TODO  DOING
-        global fail_count
-        fail_count = 0
-        check_backup_strategy_lbp(network_graph_lbp, ap, deleted_edges)
+        #global fail_count
+        #fail_count = 0
+        #check_backup_strategy_lbp(network_graph_lbp, ap, deleted_edges)
 
-        print "Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
-        outfile.write("Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
+        #print "Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
+        #outfile.write("Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
         # print "First graph: %s " % network_graph
         # rip_gen.draw_graph(network_graph)
         # print "Second graph: %s " % reduced_graph
@@ -150,8 +150,8 @@ def single_experiment(size):
 
 if __name__ == '__main__':
     global outfile
-    outfile = open('output.txt', 'a')
-    for i in range(1):
+    outfile = open('output-best-and-worst.txt', 'a')
+    for i in range(10):
         print "\n******** STARTING SMALL EXPERIMENT ********"
         single_experiment(10)
 

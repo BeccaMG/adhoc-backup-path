@@ -1,0 +1,9 @@
+#!/bin/bash
+grep -ie second -e "10% of" output-big.txt | grep -A 1 -ie "10% of" > 10percent-second-best-big.txt
+grep -ie worst -e "10% of" output-big.txt | grep -A 1 -ie "10% of" > 10percent-worst-big.txt
+grep -ie second -e "30% of" output-big.txt | grep -A 1 -ie "30% of" > 30percent-second-best-big.txt
+grep -ie worst -e "30% of" output-big.txt | grep -A 1 -ie "30% of" > 30percent-worst-big.txt
+grep -ie second -e "50% of" output-big.txt | grep -A 1 -ie "50% of" > 50percent-second-best-big.txt
+grep -ie worst -e "50% of" output-big.txt | grep -A 1 -ie "50% of" > 50percent-worst-big.txt
+grep -ie second -e "70% of" output-big.txt | grep -A 1 -ie "70% of" > 70percent-second-best-big.txt
+grep -ie worst -e "70% of" output-big.txt | grep -A 1 -ie "70% of" > 70percent-worst-big.txt
