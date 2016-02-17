@@ -39,10 +39,19 @@ def detect_affected_paths(primary_paths, deleted_edges):
 
 def check_backup_strategy(original_graph, reduced_graph, source, destination):
     current_node = source
+    #nhv = original_graph.node[current_node]['default_next_hop']
+    #dm = original_graph.node[current_node]['distance_matrix']
+    #bhv = original_graph.node[current_node]['backup_next_hop']
+    #print "I am in node %d and to go to %d" % (current_node,destination)
+
+    #print dm
+    #print nhv
+    #print bhv
     previous_node = None
     TTL = original_graph.number_of_nodes()
     while (current_node != destination and TTL >= 0):
         nhv = original_graph.node[current_node]['default_next_hop']
+        dm = original_graph.node[current_node]['distance_matrix']
         next_hop = nhv[destination]
         #print "I am in node %d and to go to %d I should use %d" % (current_node,destination,next_hop)
         if (next_hop != previous_node and reduced_graph.has_edge(current_node, next_hop)):
@@ -51,13 +60,14 @@ def check_backup_strategy(original_graph, reduced_graph, source, destination):
             TTL = TTL-1
         else:
             bhv = original_graph.node[current_node]['backup_next_hop']
-            next_hop = bhv[destination]
-            if (next_hop != None and reduced_graph.has_edge(current_node, next_hop)):
-                if (next_hop == previous_node):
+            bnext_hop = bhv[destination]
+            #print "My backup next_hop is %d" % bnext_hop
+            if (bnext_hop != None and reduced_graph.has_edge(current_node, bnext_hop)):
+                if (bnext_hop == previous_node):
                     global fail_count
                     fail_count += 1
                     return
-                current_node = next_hop
+                current_node = bnext_hop
                 previous_node = current_node
                 TTL = TTL-1
             else:
@@ -86,14 +96,11 @@ def check_backup_strategy_lbp(original_graph, affected_paths, deleted_edges):
 def single_experiment(size):
     # Original graph to clone several times, with the second best path strategy applied
     network_graph = rip_gen.generate_rip_graph(size)
-    sbp.second_best_cost_backup_path(network_graph)
 
     # This creates two more copies of the graph so I can apply each backup strategy on them
     network_graph_wbp = network_graph.subgraph(network_graph.nodes())
-    wbp.worst_cost_backup_path(network_graph_wbp)
-
-    #network_graph_lbp = network_graph.subgraph(network_graph.nodes())
-    #lbp.least_overlapping_backup_path(network_graph_lbp)
+    network_graph_lbp = network_graph.subgraph(network_graph.nodes())
+    lbp.least_overlapping_backup_path(network_graph_lbp)
 
     # Compute all the shortest paths in the graph as primary paths
     print "A graph with %d nodes and %d edges was generated." % (network_graph.number_of_nodes(), network_graph.number_of_edges())
@@ -119,6 +126,7 @@ def single_experiment(size):
         # print ap
         print "Affection rate (paths affected after deletion): %d/%d = %.2f%%" % (len(ap), len(primary_paths), len(ap)*100.0/len(primary_paths))
 
+        sbp.second_best_cost_backup_path(network_graph)
         global fail_count
         fail_count = 0
         for (s,d) in ap:
@@ -127,39 +135,33 @@ def single_experiment(size):
         print "\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
         #outfile.write("\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
+        wbp.worst_cost_backup_path(network_graph_wbp)
         global fail_count
         fail_count = 0
         for (s,d) in ap:
             check_backup_strategy(network_graph_wbp, reduced_graph, s, d)
 
-        print "Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
+        print "Using WORST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
         #outfile.write("Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
         # TODO  DOING
-        #global fail_count
-        #fail_count = 0
-        #check_backup_strategy_lbp(network_graph_lbp, ap, deleted_edges)
-
-        #print "Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
-        #outfile.write("Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
-        # print "First graph: %s " % network_graph
-        # rip_gen.draw_graph(network_graph)
-        # print "Second graph: %s " % reduced_graph
-        # rip_gen.draw_graph(reduced_graph)
+        global fail_count
+        fail_count = 0
+        check_backup_strategy_lbp(network_graph_lbp, ap, deleted_edges)
 
 
 if __name__ == '__main__':
     global outfile
     outfile = open('output-best-and-worst.txt', 'a')
-    for i in range(10):
-        print "\n******** STARTING SMALL EXPERIMENT ********"
-        single_experiment(10)
+    for i in range(1):
+        #print "\n******** STARTING SMALL EXPERIMENT ********"
+        #single_experiment(10)
 
         print "\n\n******** STARTING MEDIUM EXPERIMENT ********"
         single_experiment(50)
 
-        print "\n\n******** STARTING BIG EXPERIMENT ********"
-        single_experiment(100)
+        #print "\n\n******** STARTING BIG EXPERIMENT ********"
+        #single_experiment(100)
 
     outfile.close()
     #for n, nattr in network_graph.nodes(data=True):  # For each node n and attribute nattr

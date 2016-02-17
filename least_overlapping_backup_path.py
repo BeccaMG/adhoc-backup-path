@@ -58,7 +58,7 @@ def get_single_backup(primary_path, path_matrix):
 
 
 if __name__ == '__main__':
-    network_graph = rip_gen.generate_rip_graph(50)
+    network_graph = rip_gen.generate_rip_graph(10)
 
     np.set_printoptions(precision=1)
 

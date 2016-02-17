@@ -20,6 +20,7 @@ def worst_cost_backup_path(G):
         dm = nattr['distance_matrix']
         nhv = nattr['default_next_hop']
         bnhv = nattr['backup_next_hop']
+        #print dm
         
         for i in range(0, G.number_of_nodes()):
             if i != n:
@@ -32,12 +33,14 @@ def worst_cost_backup_path(G):
                 if bnhv[i] == nhv[i] and len(result) <= 1:
                     bnhv[i] = None
                 elif bnhv[i] == nhv[i]:
-                    bnhv[i] = result[1]                 
+                    bnhv[i] = result[1]
+        #print nhv
+        #print bnhv
         
 
 if __name__ == '__main__':    
     
-    network_graph = rip_gen.generate_rip_graph(50)
+    network_graph = rip_gen.generate_rip_graph(6)
     
     np.set_printoptions(precision=1)
     
