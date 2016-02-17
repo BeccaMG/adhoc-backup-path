@@ -15,7 +15,7 @@ def least_overlapping_backup_path(G):
         pp = nattr['primary_paths']
         bp = nattr['backup_paths']
         bnh = nattr['backup_next_hop']
-
+        print "\nCalculating Node = %d" % n
         for m, mattr in G.nodes(data=True):
             if m == n:
                 pp.append([])
@@ -28,10 +28,12 @@ def least_overlapping_backup_path(G):
                 # random.shuffle(pm)
                 bp.append(get_single_backup(ppx, pm))
                 bnh[m] = (bp[m][1])
+                sys.stdout.write('.')
                 # print "Path Matrix of %d to %d = %s" % (n, m, pm)
-            print "Primary_path of %d to %d = %s" % (n, m, pp[m])
-            print "Backup_path of %d to %d = %s" % (n, m, bp[m])
-            print "Backup_next_hop of %d to %d = %.0f" % (n, m, bnh[m])
+            # print "Primary_path of %d to %d = %s" % (n, m, pp[m])
+            # print "Backup_path of %d to %d = %s" % (n, m, bp[m])
+            # print "Backup_next_hop of %d to %d = %.0f" % (n, m, bnh[m])
+
         nattr['primary_paths'] = pp
         nattr['backup_paths'] = bp
         nattr['backup_next_hop'] = bnh
