@@ -131,7 +131,6 @@ def single_experiment(size):
         fail_count = 0
         for (s,d) in ap:
             check_backup_strategy(network_graph, reduced_graph, s, d)
-
         print "\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
         #outfile.write("\nUsing SECOND BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
@@ -140,14 +139,14 @@ def single_experiment(size):
         fail_count = 0
         for (s,d) in ap:
             check_backup_strategy(network_graph_wbp, reduced_graph, s, d)
-
         print "Using WORST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
         #outfile.write("Using WORST BEST COST backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
-        # TODO  DOING
         global fail_count
         fail_count = 0
         check_backup_strategy_lbp(network_graph_lbp, ap, deleted_edges)
+        print "Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap))
+        #outfile.write("Using LEAST OVERLAPPING backup strategy...   Fail rate: %d/%d = %.2f%%" % (fail_count, len(ap), fail_count*100.0/len(ap)))
 
 
 if __name__ == '__main__':
